@@ -10,6 +10,8 @@ struct GameRecord: Codable {
     }
     
     func toString() -> String {
-        return "\(correct)/\(total) (\(date.dateTimeString)"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yy HH:mm"
+        return "\(correct)/\(total) (\(dateFormatter.string(from: date)))"
     }
 }
