@@ -51,7 +51,7 @@
                                             <constraint firstAttribute="width" secondItem="S8z-Ru-kDa" secondAttribute="height" multiplier="2:3" id="sh0-MJ-EaS"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EFG-bg-V1p" userLabel="Question Label">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 6?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EFG-bg-V1p" userLabel="Question Label">
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="99.5"/>
                                         <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                         <color key="textColor" name="YP White"/>
@@ -105,17 +105,23 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="cry-b9-jtT">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Iu4-7p-uq4" secondAttribute="trailing" constant="20" id="0cG-0X-6FO"/>
                             <constraint firstItem="Iu4-7p-uq4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="3dS-zL-96s"/>
+                            <constraint firstItem="cry-b9-jtT" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5WY-eM-Lwh"/>
+                            <constraint firstItem="cry-b9-jtT" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="9It-o2-HKY"/>
                             <constraint firstItem="Iu4-7p-uq4" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="A53-qu-Try"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Iu4-7p-uq4" secondAttribute="bottom" id="nXt-Ga-NKO"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="cry-b9-jtT" id="wKl-V3-Yx5"/>
                         <outlet property="counterView" destination="QK4-gG-c2b" id="lmv-Au-2Wh"/>
                         <outlet property="imageView" destination="S8z-Ru-kDa" id="sFT-7X-yq1"/>
                         <outlet property="noButton" destination="sYO-I1-8GN" id="1s7-nk-qjd"/>

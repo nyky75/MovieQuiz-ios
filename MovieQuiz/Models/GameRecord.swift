@@ -1,17 +1,16 @@
 import Foundation
 
 struct GameRecord: Codable {
-    let correct: Int
-    let total: Int
+    let correctAnswers: Int
+    let totalQuestions: Int
     let date: Date
     
-    func isBetter(_ another: GameRecord) -> Bool {
-        return correct < another.correct
+    func isBetter(_ anotherGame: GameRecord) -> Bool {
+        return correctAnswers < anotherGame.correctAnswers
     }
     
-    func toString() -> String {
-        let dateFormatter = DateFormatter()
+    func toString(dateFormatter: DateFormatter) -> String {
         dateFormatter.dateFormat = "dd.MM.yy HH:mm"
-        return "\(correct)/\(total) (\(dateFormatter.string(from: date)))"
+        return "\(correctAnswers)/\(totalQuestions) (\(dateFormatter.string(from: date)))"
     }
 }
