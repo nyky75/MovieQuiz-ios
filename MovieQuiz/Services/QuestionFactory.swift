@@ -87,11 +87,11 @@ class QuestionFactory: QuestionFactoryProtocol {
                 print("Failed to load data")
             }
             
-            let rating = Float(movie.rating) ?? 0
-            print(rating)
-            let text = "Рейтинг этого фильма больше чем 7?"
-            let correctAnswer = rating > 7
+            let rating = Double(movie.rating) ?? 0
+            let newRating = getRandomRating(startRating: rating)
             
+            let text = "Рейтинг этого фильма больше чем \(newRating)?"
+            let correctAnswer = rating > newRating
             let question = QuizQuestion(image: imageData, text: text, correctAnswer: correctAnswer)
             
             DispatchQueue.main.async { [weak self] in
@@ -99,6 +99,17 @@ class QuestionFactory: QuestionFactoryProtocol {
                 self.delegate?.didReceiveNextQuestion(question: question)
             }
         }
+    }
+    private func getRandomRating(startRating: Double) -> Double {
+        let delta: Double = startRating * 0.1
+        let randomValueToAdd: Double = Double.random(in: delta / 2...delta)
+        let shouldBeAdded: Bool = Bool.random()
+        var newRating: Double = shouldBeAdded ? startRating + randomValueToAdd : startRating - randomValueToAdd
+        newRating = round(newRating * 10) / 10
+        
+        return newRating
+    }
+    }
 //        var newIndex: Int
 //        repeat {
 //            guard let indexQuestion = (0..<questions.count).randomElement() else {
@@ -111,6 +122,3 @@ class QuestionFactory: QuestionFactoryProtocol {
 //        askedQuestions.append(newIndex)
 ////        let question = questions[safe: newIndex]
 //        delegate?.didReceiveNextQuestion(question: question)
-    }
-
-    }
