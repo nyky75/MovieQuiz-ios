@@ -1,15 +1,30 @@
 import Foundation
 
+
 class QuestionFactory: QuestionFactoryProtocol {
     private let moviesLoader: MoviesLoader
-    private weak var delegate: QuestionFactoryDelegate?
+    private weak var delegate: MovieQuizViewController?
     
     
     private var askedQuestions: [Int] = []
     
-    init(moviesLoader: MoviesLoader, delegate: QuestionFactoryDelegate) {
+    init(moviesLoader: MoviesLoader, delegate: MovieQuizViewController) {
         self.moviesLoader = moviesLoader
         self.delegate = delegate
+    }
+    
+    enum DataError: Error, LocalizedError {
+        case NoMoviesError
+        case NoMovieImage
+        
+        var errorDescription: String? {
+            switch self {
+            case .NoMoviesError:
+                return "Failed to create movie list"
+            case .NoMovieImage:
+                return "Can`t load image of movie"
+            }
+        }
     }
     
     func loadData() {
@@ -18,6 +33,10 @@ class QuestionFactory: QuestionFactoryProtocol {
                 guard let self = self else { return }
                 switch result {
                 case .success(let mostPopularMovies):
+                    if mostPopularMovies.items.count == 0 {
+                        self.delegate?.didFailToLoadData(with: DataError.NoMoviesError)
+                        return
+                    }
                     self.movies = mostPopularMovies.items
                     self.delegate?.didLoadDataFromServer()
                 case .failure(let error):
@@ -28,50 +47,7 @@ class QuestionFactory: QuestionFactoryProtocol {
         }
     }
     private var movies: [MostPopularMovie] = []
-//    private let question: String = "Рейтинг этого фильма больше чем 6?"
-//    private let questions: [QuizQuestion] = [
-//            QuizQuestion(
-//                image: "The Godfather",
-//                text: "Рейтинг этого фильма больше чем 6?",
-//                correctAnswer: true),
-//            QuizQuestion(
-//                image: "The Dark Knight",
-//                text: "Рейтинг этого фильма больше чем 6?",
-//                correctAnswer: true),
-//            QuizQuestion(
-//                image: "Kill Bill",
-//                text: "Рейтинг этого фильма больше чем 6?",
-//                correctAnswer: true),
-//            QuizQuestion(
-//                image: "The Avengers",
-//                text: "Рейтинг этого фильма больше чем 6?",
-//                correctAnswer: true),
-//            QuizQuestion(
-//                image: "Deadpool",
-//                text: "Рейтинг этого фильма больше чем 6?",
-//                correctAnswer: true),
-//            QuizQuestion(
-//                image: "The Green Knight",
-//                text: "Рейтинг этого фильма больше чем 6?",
-//                correctAnswer: true),
-//            QuizQuestion(
-//                image: "Old",
-//                text: "Рейтинг этого фильма больше чем 6?",
-//                correctAnswer: false),
-//            QuizQuestion(
-//                image: "The Ice Age Adventures of Buck Wild",
-//                text: "Рейтинг этого фильма больше чем 6?",
-//                correctAnswer: false),
-//            QuizQuestion(
-//                image: "Tesla",
-//                text: "Рейтинг этого фильма больше чем 6?",
-//                correctAnswer: false),
-//            QuizQuestion(
-//                image: "Vivarium",
-//                text: "Рейтинг этого фильма больше чем 6?",
-//                correctAnswer: false)
-//        ]
-
+    
     func requestNextQuestion() {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
@@ -84,8 +60,11 @@ class QuestionFactory: QuestionFactoryProtocol {
             do {
                 imageData = try Data(contentsOf: movie.resizedImageURL)
             } catch {
-                print("Failed to load data")
-            }
+                DispatchQueue.main.sync {
+                    self.delegate?.didFailToLoadData(with: DataError.NoMovieImage)
+                    return
+                }
+        }
             
             let rating = Double(movie.rating) ?? 0
             let newRating = getRandomRating(startRating: rating)
@@ -109,16 +88,4 @@ class QuestionFactory: QuestionFactoryProtocol {
         
         return newRating
     }
-    }
-//        var newIndex: Int
-//        repeat {
-//            guard let indexQuestion = (0..<questions.count).randomElement() else {
-//                delegate?.didReceiveNextQuestion(question: nil)
-//                return
-//            }
-//            newIndex = indexQuestion
-//        } while askedQuestions.contains(newIndex)
-//        
-//        askedQuestions.append(newIndex)
-////        let question = questions[safe: newIndex]
-//        delegate?.didReceiveNextQuestion(question: question)
+}
