@@ -33,7 +33,7 @@ class StatisticServiceImplementation: StatisticServiceProtocol {
         get {
             guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
                     let record = try? JSONDecoder().decode(GameRecord.self, from: data) else {
-                return .init(correct: 0, total: 0, date: Date())
+                return .init(correctAnswers: 0, totalQuestions: 0, date: Date())
             }
             
             return record
@@ -66,7 +66,7 @@ class StatisticServiceImplementation: StatisticServiceProtocol {
     
     func store(correct count: Int, total amount: Int) {
         
-        let newGame = GameRecord(correct: count, total: amount, date: Date())
+        let newGame = GameRecord(correctAnswers: count, totalQuestions: amount, date: Date())
         
         if bestGame.isBetter(newGame) {
             bestGame = newGame

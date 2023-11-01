@@ -1,11 +1,3 @@
-//
-//  AlertPresenter.swift
-//  MovieQuiz
-//
-//  Created by Руслан Коршунов on 05.09.23.
-//
-
-import Foundation
 import UIKit
 
 protocol AlertPresenterProtocol {
