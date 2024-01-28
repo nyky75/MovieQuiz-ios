@@ -2,7 +2,7 @@
 //  MovieQuizUITestsLaunchTests.swift
 //  MovieQuizUITests
 //
-//  Created by Руслан Коршунов on 30.11.23.
+//  Created by Руслан Коршунов on 01.12.23.
 //
 
 import XCTest
