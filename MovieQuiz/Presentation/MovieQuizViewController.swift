@@ -19,12 +19,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var textView: UILabel!
     @IBOutlet private weak var counterView: UILabel!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
-    
-
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter.viewController = self
+        
         imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = UIColor.clear.cgColor
         imageView.layer.masksToBounds = true
@@ -69,7 +69,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         counterView.text = step.questionNumber
     }
     
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             correctAnswers += 1
         }
@@ -122,10 +122,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showLoadingIndicator() {activityIndicator.startAnimating() // включаем анимацию
-                
+        
     }
     private func hideLoadingIndicator() {
-
+        
         activityIndicator.stopAnimating()
     }
     private func showNetworkError(message: String) {
@@ -137,25 +137,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let self = self else {return}
             self.questionFactory?.loadData()
             
-    }
+        }
         
         alertPresenter?.show(AlertModel: alertModel)
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        presenter.currentQuestion = currentQuestion
+        presenter.noButtonClicked()
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
-    
-    }
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClicked()
+    }}
