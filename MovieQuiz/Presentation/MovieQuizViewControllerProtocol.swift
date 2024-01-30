@@ -8,5 +8,5 @@ protocol MovieQuizViewControllerProtocol: AnyObject {
        
     func showNetworkError(message: String)
     func showFinalResults(alertModel: AlertModel)
-    func enableButtons()
+    func toggleYesNoButtons(toEnable: Bool)
 }

@@ -1,20 +1,21 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
-    // MARK: - Private Properties
-    private var alertPresenter: AlertPresenterProtocol?
-    private var currentQuestion: QuizQuestion?
-    private let dateFormatter = DateFormatter()
-    private var moviesLoader: MoviesLoader = MoviesLoader()
-    var presenter: MovieQuizPresenter!
     // MARK: - @IBOutlet
-    
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textView: UILabel!
     @IBOutlet private weak var counterView: UILabel!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+    
+    // MARK: - Private Properties
+    private var alertPresenter: AlertPresenterProtocol?
+    private var currentQuestion: QuizQuestion?
+    private let dateFormatter = DateFormatter()
+    private var moviesLoader: MoviesLoader = MoviesLoader()
+    private var presenter: MovieQuizPresenter!
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,19 +24,8 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         imageView.layer.cornerRadius = 20
         activityIndicator.hidesWhenStopped = true
     }
-    // MARK: - Actions
-    
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
-        presenter.noButtonClicked()
-        disableButtons()
-    }
-    
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        presenter.yesButtonClicked()
-        disableButtons()
-    }
-    // MARK: - Private functions
 
+    // MARK: - Public functions
     func show(quiz step: QuizStepViewModel) {
         imageView.layer.borderColor = UIColor.clear.cgColor
         imageView.image = step.image
@@ -50,7 +40,6 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         }
     
     func showLoadingIndicator() {
-        activityIndicator.isHidden = false
         activityIndicator.startAnimating() // включаем анимацию
     }
     func hideLoadingIndicator() {
@@ -69,15 +58,26 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         }
         alertPresenter?.show(AlertModel: alertModel)
     }
-    func disableButtons() {
-        yesButton.isEnabled = false
-        noButton.isEnabled = false
+
+    func toggleYesNoButtons(toEnable: Bool) {
+        yesButton.isEnabled = toEnable
+        noButton.isEnabled = toEnable
     }
-    func enableButtons() {
-        yesButton.isEnabled = true
-        noButton.isEnabled = true
-    }
+    
     func showFinalResults(alertModel: AlertModel) {
         alertPresenter?.show(AlertModel: alertModel)
+    }
+    
+    // MARK: - IBAction
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        presenter.noButtonClicked()
+//        disableButtons()
+        toggleYesNoButtons(toEnable: false)
+    }
+    
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        presenter.yesButtonClicked()
+//        disableButtons()
+        toggleYesNoButtons(toEnable: false)
     }
 }

@@ -1,17 +1,19 @@
-import Foundation
 import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
-    func didLoadDataFromServer() {
-        viewController?.hideLoadingIndicator()
-        questionFactory?.requestNextQuestion()
-    }
+    // MARK: - Public Properties
+    let questionsAmount: Int = 10
     
-    func didFailToLoadData(with error: Error) {
-        let message = error.localizedDescription
-        viewController?.showNetworkError(message: message)
-    }
+    // MARK: - Private Properties
+    private var currentQuestion: QuizQuestion?
+    private var currentQuestionIndex: Int = 0
+    private var correctAnswers = 0
+    private weak var viewController: MovieQuizViewControllerProtocol?
+    private var questionFactory: QuestionFactoryProtocol?
+    private let statisticService: StatisticServiceProtocol
+    private let dateFormatter = DateFormatter()
     
+    // MARK: - Initializers
     init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
         
@@ -21,25 +23,18 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         viewController.showLoadingIndicator()
     }
     
-    var alertPresenter: AlertPresenterProtocol?
-    private var currentQuestion: QuizQuestion?
-    let questionsAmount: Int = 10
-    private var currentQuestionIndex: Int = 0
-    var correctAnswers = 0
-    
-    private weak var viewController: MovieQuizViewControllerProtocol?
-    var questionFactory: QuestionFactoryProtocol?
-    private let statisticService: StatisticServiceProtocol!
-    private let dateFormatter = DateFormatter()
-    
-    private func didAnswer(isYes: Bool) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = isYes
-        self.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    // MARK: - Public Methods
+    func didLoadDataFromServer() {
+        viewController?.hideLoadingIndicator()
+        questionFactory?.requestNextQuestion()
     }
     
+    func didFailToLoadData(with error: Error) {
+        let message = error.localizedDescription
+        viewController?.showNetworkError(message: message)
+    }
+       
+
     func didAnswer(isCorrect: Bool) {
         if isCorrect {
             correctAnswers += 1
@@ -112,7 +107,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         } else {
             self.switchToNextQuestion()
             questionFactory?.requestNextQuestion()
-            viewController?.enableButtons()
+            viewController?.toggleYesNoButtons(toEnable: true)
         }
     }
     func makeResultsMessage() -> String {
@@ -151,4 +146,14 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         })
         viewController?.showFinalResults(alertModel: alertModel)
     }
+
+    // MARK: - Private Methods
+    private func didAnswer(isYes: Bool) {
+        guard let currentQuestion = currentQuestion else {
+            return
+        }
+        let givenAnswer = isYes
+        self.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
 }
