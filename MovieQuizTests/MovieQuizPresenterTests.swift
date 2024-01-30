@@ -2,6 +2,9 @@ import XCTest
 @testable import MovieQuiz
 
 final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
+    func enableButtons() {
+    }
+    
     var alertPresenter: MovieQuiz.AlertPresenterProtocol?
     
     func show(quiz step: QuizStepViewModel) {
