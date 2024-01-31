@@ -3,12 +3,12 @@ import Foundation
 
 class QuestionFactory: QuestionFactoryProtocol {
     private let moviesLoader: MoviesLoader
-    private weak var delegate: MovieQuizViewController?
+    private weak var delegate: QuestionFactoryDelegate?
     
     
     private var askedQuestions: [Int] = []
     
-    init(moviesLoader: MoviesLoader, delegate: MovieQuizViewController) {
+    init(moviesLoader: MoviesLoader, delegate: QuestionFactoryDelegate?) {
         self.moviesLoader = moviesLoader
         self.delegate = delegate
     }

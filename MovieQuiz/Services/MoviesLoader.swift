@@ -5,12 +5,15 @@ protocol MoviesLoadingProtocol {
 }
 
 struct MoviesLoader: MoviesLoadingProtocol {
-    private let networkClient = NetworkClient()
+    private let networkClient: NetworkRouting
+    init(networkClient: NetworkRouting = NetworkClient()) {
+        self.networkClient = networkClient
+    }
     
     // MARK: - URL
     private var apiKEY = "k_zcuw1ytf"
     private var mostPopularMoviesUrl: URL {
-        guard let url = URL(string: "https://imdb-api.com/en/API/Top250Movies/\(apiKEY)") else {
+        guard let url = URL(string: "https://tv-api.com/en/API/Top250Movies/\(apiKEY)") else {
             preconditionFailure("Unable to construct mostPopularMoviesUrl")
             
         }
