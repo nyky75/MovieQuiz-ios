@@ -15,7 +15,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     private let dateFormatter = DateFormatter()
     private var moviesLoader: MoviesLoader = MoviesLoader()
     private var presenter: MovieQuizPresenter!
-
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +24,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         imageView.layer.cornerRadius = 20
         activityIndicator.hidesWhenStopped = true
     }
-
+    
     // MARK: - Public functions
     func show(quiz step: QuizStepViewModel) {
         imageView.layer.borderColor = UIColor.clear.cgColor
@@ -34,13 +34,13 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     }
     
     func highlightImageBorder(isCorrectAnswer: Bool) {
-            imageView.layer.masksToBounds = true
-            imageView.layer.borderWidth = 8
-            imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        }
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+    }
     
     func showLoadingIndicator() {
-        activityIndicator.startAnimating() // включаем анимацию
+        activityIndicator.startAnimating()
     }
     func hideLoadingIndicator() {
         activityIndicator.stopAnimating()
@@ -58,7 +58,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         }
         alertPresenter?.show(AlertModel: alertModel)
     }
-
+    
     func toggleYesNoButtons(toEnable: Bool) {
         yesButton.isEnabled = toEnable
         noButton.isEnabled = toEnable
@@ -71,13 +71,11 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     // MARK: - IBAction
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         presenter.noButtonClicked()
-//        disableButtons()
         toggleYesNoButtons(toEnable: false)
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         presenter.yesButtonClicked()
-//        disableButtons()
         toggleYesNoButtons(toEnable: false)
     }
 }
