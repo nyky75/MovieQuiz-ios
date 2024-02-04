@@ -110,8 +110,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         
         let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
         let currentGameResultLine = "Ваш результат: \(correctAnswers)\\\(questionsAmount)"
-        let bestGameInfoLine = "Рекорд: \(bestGame.correctAnswers)\\\(bestGame.totalQuestions)"
-        + " (\(bestGame.toString(dateFormatter: dateFormatter)))"
+        let bestGameInfoLine = "Рекорд: \(bestGame.toString(dateFormatter: dateFormatter))"
         let averageAccuracyLine = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
         
         let resultMessage = [

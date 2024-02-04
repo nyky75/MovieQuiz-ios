@@ -11,6 +11,6 @@ struct GameRecord: Codable {
     
     func toString(dateFormatter: DateFormatter) -> String {
         dateFormatter.dateFormat = "dd.MM.yy HH:mm"
-        return "\(correctAnswers)/\(totalQuestions) (\(dateFormatter.string(from: date)))"
+        return "\(correctAnswers)\\\(totalQuestions) (\(dateFormatter.string(from: date)))"
     }
 }
